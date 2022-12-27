@@ -18,7 +18,14 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 async function run() {
     try {
+        const userCollection = client.db("TaskManagementApp").collection("user");
         const taskCollection = client.db("TaskManagementApp").collection("task");
+        // Add user to database
+        app.post('/adduser', async (req, res) => {
+            const user = req.body;
+            const addUser = await userCollection.insertOne(user);
+            res.send(addUser);
+        })
         // Add task to the database
         app.post('/addtask', async (req, res) => {
             const task = req.body;
