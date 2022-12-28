@@ -20,6 +20,12 @@ async function run() {
     try {
         const userCollection = client.db("TaskManagementApp").collection("user");
         const taskCollection = client.db("TaskManagementApp").collection("task");
+        // Load All Users From Database
+        app.get('/users', async (req, res) => {
+            const query = {};
+            const allUser = await userCollection.find(query).toArray();
+            res.send(allUser);
+        })
         // Add user to database
         app.post('/adduser', async (req, res) => {
             const user = req.body;
