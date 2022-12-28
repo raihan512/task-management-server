@@ -60,6 +60,25 @@ async function run() {
             const allTask = await taskCollection.find(allTaskQuery).toArray();
             res.send(allTask);
         })
+        // Load task by id
+        app.get('/alltask/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const task = await taskCollection.find(query).toArray();
+            res.send(task);
+        })
+        // Update task by id
+        app.patch('/addtask/:id', async (req, res) => {
+            const id = req.params.id;
+            const body = req.body;
+            const query = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const addTask = {
+                $set: { task: body.task }
+            }
+            const updateTask = await taskCollection.updateOne(query, addTask, options);
+            res.send(updateTask);
+        })
         // Delete a task
         app.delete('/alltask/:id', async (req, res) => {
             const id = req.params.id;
